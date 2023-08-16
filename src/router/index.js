@@ -1,12 +1,12 @@
 import store from '@/store'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home/Home.vue'
-import Login from '../views/Home/Login'
-import OAuth from '../views/OAuth'
-import Mypage from '../views/Home/Mypage'
-import SignUp from '../views/Home/SignUp'
-import HelloWorld from '../components/HelloWorld'
+import Home from '/src/views/Home/Home.vue'
+import Login from '/src/views/Home/Login'
+import OAuth from '/src/views/OAuth'
+import Mypage from '/src/views/Home/Mypage'
+import SignUp from '/src/views/Home/SignUp'
+import HelloWorld from '/src/components/HelloWorld'
 import Shop from '@/views/Shop/Shop'
 import Admin from '@/views/Admin/Admin'
 import Category from '@/views/Admin/Category/Category'
@@ -79,14 +79,6 @@ const routes = [
       { path: "userinfo", name: 'UserInfo', component: UserInfo, },
     ]
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // },
   {
     path: '/shop',
     name: 'Shop',
