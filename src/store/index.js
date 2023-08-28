@@ -11,12 +11,17 @@ const instance = axios.create({
   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
 });
 
+// Axios Instance 업데이트 함수
+function updateAxiosInstance(token) {
+  instance.defaults.headers['Authorization'] = 'Bearer ' + token;
+}
+
 
 export default new Vuex.Store({
   state: {
     UserInfo: {
       id: null, name: null, auth: [], token: null, oauth: null, login_success: false, login_error: false,
-      point: null, address: null, phone: null, AUTH: null, datetime: null, reject: null,
+      point: null, address: null, postcode:null, phone: null, AUTH: null, datetime: null, reject: null,
       wishList: [], heartList: [],
     },
     Categories: [],
@@ -31,7 +36,10 @@ export default new Vuex.Store({
     },
     Menu: [],
     productList_shop: [],
-    productDetails_shop: null,
+    productDetails_shop: {
+      category:'', caution:'', code:0, count:0, descr:'', detail_desc:'', file_list:[], filesname:'', mainCategory:'', mainPhoto:'', manufacturer:'', material:'', 
+      name:'', options:[], options_s:[], point:'', price:0, rating:0, sale:false, shipping:'', size:'', stock:0, type:[], type_s:''
+    },
     items: [],
     orderRequest: null,
     orderInfo: {
@@ -61,6 +69,7 @@ export default new Vuex.Store({
       state.UserInfo.login_success = true
       state.UserInfo.login_error = false
       state.UserInfo.address = data.user.address
+      state.UserInfo.postcode = data.user.postcode
       state.UserInfo.phone = data.user.phone
       state.UserInfo.point = data.user.point
       state.UserInfo.AUTH = data.user.auth
@@ -85,10 +94,8 @@ export default new Vuex.Store({
       state.UserInfo.wishList = []
       localStorage.removeItem('token')
       console.log("로그아웃?" + localStorage.getItem('token'))
-      if (Route.currentRoute.matched[0].name === "Shop") {
-        Route.push("/shop")
-      } else {
-        Route.push("/")
+      if (Route.currentRoute.name !== "Main") {
+        Route.replace("/")
       }
     },
     SET_USER_REFRESH(state, data) {
@@ -100,6 +107,7 @@ export default new Vuex.Store({
       state.UserInfo.login_success = true
       state.UserInfo.login_error = false
       state.UserInfo.address = data.user.address
+      state.UserInfo.postcode = data.user.postcode
       state.UserInfo.phone = data.user.phone
       state.UserInfo.point = data.user.point
       state.UserInfo.AUTH = data.user.auth
@@ -284,8 +292,11 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         instance.post('api/public/login', payload)
           .then(Response => {
-            localStorage.setItem('token', Response.data.token)
+            const newToken = Response.data.token;
+            localStorage.setItem('token', newToken);
+            updateAxiosInstance(newToken);
             commit("SET_USER", Response.data)
+            console.log('Response.data', Response.data)
             if (Route.currentRoute.name === "shopLogin") {
               Route.push("/shop/")
             } else {
@@ -293,7 +304,10 @@ export default new Vuex.Store({
             }
           })
           .catch(Error => {
-            console.log('login_error')
+            console.log('login_error', Error.response)
+            if( Error.response.status === 401) {
+              alert("아이디 혹은 비밀번호를 확인해주세요.");
+            }
           })
       })
     },
@@ -301,7 +315,9 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         instance.get('api/public/kakaologin', { params: { code: payload } })
           .then(Response => {
-            localStorage.setItem('token', Response.data.token)
+            const newToken = Response.data.token;
+            localStorage.setItem('token', newToken);
+            updateAxiosInstance(newToken);
             commit("SET_USER", Response.data)
             Route.push('/')
           })
@@ -533,7 +549,7 @@ export default new Vuex.Store({
     },
     Block_user({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.put('api/admin/block-user', payload)
+        instance.put('api/admin/block-user', payload)
           .then(Response => {
             Route.go()
           })
@@ -544,7 +560,7 @@ export default new Vuex.Store({
     },
     Unblock_user({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.put('api/admin/unblock-user', payload)
+        instance.put('api/admin/unblock-user', payload)
           .then(Response => {
             Route.go()
           })
@@ -555,11 +571,11 @@ export default new Vuex.Store({
     },
     Update_UserInfo({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.put('api/public/user', payload)
+        instance.put('api/public/user', payload)
           .then(Response => {
             alert("수정이 완료되었습니다.")
             if (Route.currentRoute.name === "shopUserInfo") {
-              Route.push("/shop/")
+              Route.push("/shop/mypage")
             } else {
               Route.push("/")
             }
@@ -571,7 +587,7 @@ export default new Vuex.Store({
     },
     Delete_User({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.delete('api/public/user', { params: { username: payload } })
+        instance.delete('api/public/user', { params: { username: payload } })
           .then(Response => {
             commit("LOGOUT")
             if (Route.currentRoute.name === "shopMyPage") {
@@ -664,6 +680,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         instance.post('api/user/wishitems', payload)
           .then(Response => {
+            console.log('Response.data.wishItems', Response.data.wishItems)
             commit('SET_WISHLIST', Response.data.wishItems)
             alert("장바구니에 추가되었습니다.")
           })
@@ -685,7 +702,7 @@ export default new Vuex.Store({
     },
     deleteWishItems({ commit, state }, payload) {
       return new Promise((resolve, reject) => {
-        axios.put('api/user/wishitems', payload)
+        instance.put('api/user/wishitems', payload)
           .then(Response => {
             commit("SET_WISHLIST", Response.data)
             Route.go()
@@ -708,7 +725,7 @@ export default new Vuex.Store({
     },
     Delete_FailOrderInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        axios.delete('api/user/orderinfo')
+        instance.delete('api/user/orderinfo')
           .then(Response => {
           })
           .catch(Error => {
@@ -719,7 +736,7 @@ export default new Vuex.Store({
     //사용자 포인트차감 & 상품재고차감
     After_Success_Order({ commit }) {
       return new Promise((resolve, reject) => {
-        axios.delete('api/user/user-point')
+        instance.delete('api/user/user-point')
           .then(Response => {
           })
           .catch(Error => {
@@ -853,7 +870,7 @@ export default new Vuex.Store({
     },
     Edit_Review({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.put('api/user/review', payload)
+        instance.put('api/user/review', payload)
           .then(Response => {
             Route.push("/shop")
           })

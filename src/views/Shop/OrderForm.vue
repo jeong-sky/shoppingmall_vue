@@ -1,194 +1,185 @@
 <template>
-  <div style="width: 90%" class="mx-auto">
-    <br />
-    <v-card elevation="0">
+  <div style="width: 100%">
+    <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>주문서 작성</h4> </v-card-title>
-    </v-card>
-    <br />
-    <v-divider></v-divider>
-    <br />
-
-    <v-card style="padding: 50px" class="mx-auto">
-      <v-row v-for="(item, index) in orderRequest" :key="index">
-        <v-col cols="2">
-          <v-img
-            class="mx-auto"
-            :src="require('@/assets/' + item.product.mainPhoto)"
-            width="100"
-            height="100"
-          ></v-img>
-        </v-col>
-        <v-col>
-          <v-container>{{ item.product.name }}</v-container>
-        </v-col>
-        <v-col>
-          <v-card-text>옵션 : {{ item.option }} </v-card-text>
-        </v-col>
-        <v-col>
-          <v-card-text>수량 : {{ item.count }} </v-card-text>
-        </v-col>
-        <v-col>
-          <v-card-text
-            >판매가 : {{ item.product.price * item.count }}
-          </v-card-text>
-        </v-col>
-      </v-row>
-    </v-card>
-    <br />
-    <v-card>
-      <v-list>
-        <v-list-item>
-          <v-list-item-content><h3>주문하시는 분</h3> </v-list-item-content>
-        </v-list-item>
+      <br />
+      <v-card style="padding: 20px">
+        <v-row v-for="(item, index) in orderRequest" :key="index">
+          <v-col cols="4">
+            <v-img
+              class="mx-auto"
+              :src="require('@/assets/' + item.product.mainPhoto)"
+              width="120"
+              height="120"
+            ></v-img>
+          </v-col>
+          <v-col cols="2">
+            <v-card-text>{{ item.product.name }}</v-card-text>
+          </v-col>
+          <v-col cols="2">
+            <v-card-text>옵션 : {{ item.option }} </v-card-text>
+          </v-col>
+          <v-col cols="2">
+            <v-card-text>수량 : {{ item.count }} </v-card-text>
+          </v-col>
+          <v-col cols="2">
+            <v-card-text
+              >판매가 : {{ item.product.price * item.count }}
+            </v-card-text>
+          </v-col>
+        </v-row>
+        <br />
         <v-divider></v-divider>
-        <v-list-item>
-          <v-list-item-action style="width: 150px"> 이름 </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-text-field
-                style="width: 150px"
-                v-model="name"
-                :placeholder="UserInfo.name"
-              >
-              </v-text-field>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <br />
+        <v-row>
+          <v-col cols="6">
+            <v-list>
+              <v-list-item>
+                <v-list-item-content><h3>주문하시는 분</h3> </v-list-item-content>
+              </v-list-item>
+              <v-list-item style="margin-left:5%;margin-right:5%;">
+                <v-list-item-action style="min-width: 20%"> 이름 </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    <v-text-field
+                      v-model="name"
+                      :placeholder="UserInfo.name"
+                    >
+                    </v-text-field>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item style="margin-left:5%;margin-right:5%;">
+                <v-list-item-action style="min-width: 20%"> 주소 </v-list-item-action>
+                <v-list-item-content>
+                  <div style="display: flex;">
+                    <v-text-field
+                      v-model="postcode"
+                      placeholder="우편번호"
+                    >
+                    </v-text-field>
+                    <v-btn depressed @click="execDaumPostcode()" style="margin-left:10px">우편번호 찾기</v-btn>
+                  </div>
+                  <v-text-field
+                    style="display: contents;"
+                    v-model="address"
+                    placeholder="주소"
+                  >
+                  </v-text-field>
+                  <v-text-field
+                    style="display: contents;"
+                    v-model="detailAddress"
+                    placeholder="상세 주소"
+                  >
+                  </v-text-field>
+                  <v-text-field
+                    style="display: contents;"
+                    v-model="extraAddress"
+                    placeholder="참고 항목"
+                  >
+                  </v-text-field>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item style="margin-left:5%;margin-right:5%;">
+                <v-list-item-action style="min-width: 20%"> 연락처 </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    <v-text-field
+                      v-model="phone"
+                      :placeholder="UserInfo.phone"
+                    >
+                    </v-text-field>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+          <v-col cols="6">
+            <v-list>
+              <v-list-item>
+                <v-list-item-content>
+                  <h3>받으시는 분</h3> 
+                  <v-checkbox v-model="check"></v-checkbox>주문자와 동일
+                </v-list-item-content>
+              </v-list-item>
+              <ReceiverInfo v-if="this.check === false"/>
+            </v-list>
+          </v-col>
+        </v-row>
+        <br />
         <v-divider></v-divider>
-
-        <v-list-item style="height: 200px">
-          <v-list-item-action style="width: 150px"> 주소 </v-list-item-action>
-          <v-list-item-content>
-            <v-row>
-              <v-col cols="4">
-                <input type="text" v-model="postcode" placeholder="우편번호" />
-              </v-col>
-              <v-col>
-                <v-btn small @click="execDaumPostcode()">우편번호 찾기</v-btn>
-              </v-col>
-            </v-row>
-            <br />
-            <input type="text" v-model="address" placeholder="주소" />
-            <br />
-            <input
-              type="text"
-              v-model="detailAddress"
-              placeholder="상세주소"
-            /><br />
-            <br />
-            <input type="text" v-model="extraAddress" placeholder="참고항목" />
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-divider></v-divider>
-
-        <v-list-item>
-          <v-list-item-action style="width: 150px"> 연락처 </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-text-field
-                style="width: 150px"
-                v-model="phone"
-                :placeholder="UserInfo.phone"
-              >
-              </v-text-field>
-            </v-list-item-title>
-            <v-list-item-subtitle> "-" 표시는 생략</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+        <br />
+        <v-row>
+          <v-col cols="6">
+            <v-list>
+              <v-list-item>
+                <v-list-item-content><h3>포인트사용</h3> </v-list-item-content>
+              </v-list-item>
+              
+              <v-list-item>
+                <v-list-item-action style="width: 100px">
+                  사용포인트
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    <v-row align="center">
+                      <v-col cols="12" md="9">
+                        <v-text-field
+                          v-model="point"
+                          @change="checkPoint"
+                          placeholder="0"
+                        ></v-text-field>
+                      </v-col>
+                      점
+                    </v-row>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-action style="width: 100px">
+                  보유 포인트
+                </v-list-item-action>
+                <v-list-item-content>
+                  {{ this.UserInfo.point }}점
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+          <v-col cols="6">
+            <v-list>
+              <v-list-item>
+                <v-list-item-action style="width: 100px">
+                  결제금액
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-card-text>상품 : {{ this.price }}</v-card-text>
+                  <v-card-text
+                    >배송비 :
+                    {{ this.shipping === 0 ? "무료배송" : 2500 }}
+                  </v-card-text>
+                  <v-card-text>총계 :{{ this.total }} </v-card-text>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item>
+                <v-list-item-action style="width: 150px">
+                  결제하기
+                </v-list-item-action>
+                <v-list-item-content>
+                  <a @click="kakaopay()">
+                    <img
+                      style="padding-top: 10px"
+                      height="40px"
+                      src="@/assets/payment_icon_yellow_medium.png"
+                    />
+                  </a>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-card>
-    <br />
-    <v-card>
-      <v-list>
-        <v-list-item>
-          <v-list-item-content><h3>받으시는 분</h3> </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-checkbox v-model="check"></v-checkbox>주문자와 동일
-          </v-list-item-content>
-        </v-list-item>
-        <div v-if="this.check === false">
-          <ReceiverInfo />
-        </div>
-      </v-list>
-    </v-card>
-    <br />
-    <v-row>
-      <v-col cols="6">
-        <v-card>
-          <v-list>
-            <v-list-item>
-              <v-list-item-content><h3>포인트사용</h3> </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item>
-              <v-list-item-action style="width: 100px">
-                사용포인트
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  <v-row align="center">
-                    <v-col cols="12" md="9">
-                      <v-text-field
-                        v-model="point"
-                        @change="checkPoint"
-                      ></v-text-field>
-                    </v-col>
-                    점
-                  </v-row>
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-action style="width: 100px">
-                보유 포인트
-              </v-list-item-action>
-              <v-list-item-content>
-                {{ this.UserInfo.point }}점
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
-
-      <v-col cols="6">
-        <v-card>
-          <v-list>
-            <v-list-item>
-              <v-list-item-action style="width: 100px">
-                결제금액
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-card-text>상품 : {{ this.price }}</v-card-text>
-                <v-card-text
-                  >배송비 :
-                  {{ this.shipping === 0 ? "무료배송" : 2500 }}
-                </v-card-text>
-                <v-card-text>총계 :{{ this.total }} </v-card-text>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item>
-              <v-list-item-action style="width: 150px">
-                결제하기
-              </v-list-item-action>
-              <v-list-item-content>
-                <a @click="kakaopay()">
-                  <img
-                    style="padding-top: 10px"
-                    height="40px"
-                    src="@/assets/payment_icon_yellow_medium.png"
-                  />
-                </a>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
-    </v-row>
-    <br />
   </div>
 </template>
 <script>
@@ -205,7 +196,7 @@ export default {
       detailAddress: "",
       extraAddress: "",
       price_: 0,
-      point: 0,
+      point: null,
     };
   },
   computed: {

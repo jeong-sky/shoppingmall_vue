@@ -67,18 +67,19 @@ const onlyAuthUser = (to, from, next) => {
 }
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    children: [
-      { path: "login", name: 'Login', component: Login, },
-      { path: "mypage", name: 'Mypage', component: Mypage, },
-      { path: "signup", name: 'SignUp', component: SignUp },
-      { path: "", name: 'HelloWorld', component: HelloWorld },
-      { path: "userinfo", name: 'UserInfo', component: UserInfo, },
-    ]
-  },
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: Home,
+  //   children: [
+  //     { path: "login", name: 'Login', component: Login, },
+  //     { path: "mypage", name: 'Mypage', component: Mypage, },
+  //     { path: "signup", name: 'SignUp', component: SignUp },
+  //     { path: "", name: 'HelloWorld', component: HelloWorld },
+  //     { path: "userinfo", name: 'UserInfo', component: UserInfo, },
+  //   ]
+  // },
+  { path: '/', redirect: '/shop' },
   {
     path: '/shop',
     name: 'Shop',

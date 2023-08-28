@@ -1,105 +1,125 @@
 <template>
-  <div style="width: 90%" class="mx-auto">
-    <v-card>
-      <v-list>
-        <v-list-item>
-          <v-list-item-content><h3>내정보 수정</h3> </v-list-item-content>
-        </v-list-item>
-        <v-divider></v-divider>
-        <v-list-item>
-          <v-list-item-action style="width: 150px"> 이름 </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-text-field
-                style="width: 150px"
-                v-model="name"
-                :placeholder="UserInfo.name"
-              >
-              </v-text-field>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider></v-divider>
+  <div>
+    <v-card elevation="0" style="padding: 50px" class="mx-auto">
+      <v-card-title><h4>회원 정보 수정</h4> </v-card-title>
+      <br />
+      <v-card style="padding: 50px;" class="mx-auto">
+        <v-list>
+          <v-list-item style="margin-left:5%;margin-right:5%;">
+            <v-list-item-action style="min-width: 20%"> 이름 </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-text-field
+                  v-model="name"
+                >
+                </v-text-field>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item style="height: 200px">
-          <v-list-item-action style="width: 150px"> 주소 </v-list-item-action>
-          <v-list-item-content>
-            <v-row>
-              <v-col cols="4">
-                <input type="text" v-model="postcode" placeholder="우편번호" />
-              </v-col>
-              <v-col>
-                <v-btn small @click="execDaumPostcode()">우편번호 찾기</v-btn>
-              </v-col>
-            </v-row>
-            <br />
-            <input type="text" v-model="address" placeholder="주소" />
-            <br />
-            <input
-              type="text"
-              v-model="detailAddress"
-              placeholder="상세주소"
-            /><br />
-            <br />
-            <input type="text" v-model="extraAddress" placeholder="참고항목" />
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-divider></v-divider>
-
-        <v-list-item>
-          <v-list-item-action style="width: 150px"> 연락처 </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-text-field
-                style="width: 150px"
-                v-model="phone"
-                :placeholder="UserInfo.phone"
-              >
-              </v-text-field>
-            </v-list-item-title>
-            <v-list-item-subtitle> "-" 표시는 생략</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-divider></v-divider>
-
-        <v-list-item>
-          <v-list-item-action style="width: 150px"> 권한 </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ UserInfo.AUTH }}
-              <v-btn v-if="isAdmin === true" depressed @click="deleteRoleAdmin"
-                >권한취소</v-btn
-              >
-              <v-btn v-else depressed @click="addRoleAdmin">권한주기</v-btn>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item v-if="this.UserInfo.oauth === 'kakao'">
           <v-divider></v-divider>
-          <v-list-item-action style="width: 150px">
-            카카오계정
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-btn depressed @click="kakaoUnlink">연동해지</v-btn>
-            </v-list-item-title>
-            <v-list-item-subtitle
-              ><br />
-              * 카카오 연동해지시 자동 탈퇴처리됩니다.</v-list-item-subtitle
-            >
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+
+          <v-list-item style="margin-left:5%;margin-right:5%;">
+            <v-list-item-action style="min-width: 20%"> 주소 </v-list-item-action>
+
+
+            <v-list-item-content v-if="!modifyAddress">
+              <v-list-item-title>
+                {{ address }}
+                <v-btn @click="changeAddress()" depressed style="margin-left:15px">
+                  주소 변경
+                </v-btn> 
+              </v-list-item-title>
+            </v-list-item-content>
+
+
+            <v-list-item-content v-else>
+              <div style="display: flex;">
+                <v-text-field
+                  v-model="postcode"
+                  placeholder="우편번호"
+                >
+                </v-text-field>
+                <v-btn depressed @click="execDaumPostcode()" style="margin-left:10px">우편번호 찾기</v-btn>
+              </div>
+              <v-text-field
+                style="display: contents;"
+                v-model="address"
+                placeholder="주소"
+              >
+              </v-text-field>
+              <v-text-field
+                style="display: contents;"
+                v-model="detailAddress"
+                placeholder="상세 주소"
+              >
+              </v-text-field>
+              <v-text-field
+                style="display: contents;"
+                v-model="extraAddress"
+                placeholder="참고 항목"
+              >
+              </v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider></v-divider>
+
+          <v-list-item style="margin-left:5%;margin-right:5%;">
+            <v-list-item-action style="min-width: 20%"> 연락처 </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-text-field
+
+                  v-model="phone"
+                  :placeholder="UserInfo.phone"
+                >
+                </v-text-field>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider></v-divider>
+
+          <v-list-item style="margin-left:5%;margin-right:5%;margin-top:2%;">
+            <v-list-item-action style="min-width: 20%"> 권한 </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ UserInfo.AUTH }}
+                <v-btn v-if="isAdmin === true" depressed @click="deleteRoleAdmin" style="margin-left:15px">
+                  권한 취소
+                </v-btn>
+                <v-btn v-else depressed @click="addRoleAdmin" style="margin-left:15px">
+                  권한 부여
+                </v-btn>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item v-if="this.UserInfo.oauth === 'kakao'" style="margin-left:5%;margin-right:5%;">
+            <v-divider></v-divider>
+            <v-list-item-action style="min-width: 20%">
+              카카오계정
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-btn depressed @click="kakaoUnlink">연동해지</v-btn>
+              </v-list-item-title>
+              <v-list-item-subtitle
+                ><br />
+                * 카카오 연동해지시 자동 탈퇴처리됩니다.</v-list-item-subtitle
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
+      <br />
+      <div align="right">
+        <v-btn dark color="hsl(231, 30%, 54%)" @click="UpdateUserInfo">
+          수정 완료
+        </v-btn>
+      </div>
     </v-card>
-    <br />
-    <v-col style="text-align: right">
-      <v-btn dark color="hsl(231, 30%, 54%)" @click="UpdateUserInfo"
-        >수정</v-btn
-      >
-    </v-col>
   </div>
 </template>
 <script>
@@ -113,6 +133,7 @@ export default {
       address: "",
       detailAddress: "",
       extraAddress: "",
+      modifyAddress: false
     };
   },
   computed: {
@@ -192,10 +213,10 @@ export default {
       let userInfo = {
         username: this.UserInfo.id,
         phone: "",
-        address:
-          this.address + " " + this.detailAddress + " " + this.extraAddress,
+        address: this.address,
         postcode: this.postcode,
       };
+
       if (!!this.name) {
         userInfo.name = this.name;
       } else {
@@ -206,12 +227,38 @@ export default {
       } else {
         userInfo.phone = this.UserInfo.phone;
       }
-      if (!this.postcode || this.address === "") {
+      if (!this.postcode && this.address === "") {
         alert("주소를 입력해주세요.");
-      } else {
-        this.Update_UserInfo(userInfo);
+        return false;
       }
+
+      if(!this.postcode) {
+        userInfo.postcode = this.UserInfo.postcode;
+      }
+      if(this.address === "") {
+        userInfo.address = this.UserInfo.address;
+      }
+
+      this.detailAddress ? userInfo.address += (' '+this.detailAddress) : '';
+      this.extraAddress ? userInfo.address += (' '+this.extraAddress) : '';
+    
+      this.Update_UserInfo(userInfo);
+      
     },
+    changeAddress() {
+      this.modifyAddress = true;
+      this.postcode = null;
+      this.address = "";
+    }
   },
+  created() {
+    // UserInfo가 정의되었을 때에만 값을 초기화
+    if (this.UserInfo) {
+      this.name = this.UserInfo.name;
+      this.phone = this.UserInfo.phone;
+      this.postcode = this.UserInfo.postcode;
+      this.address = this.UserInfo.address;
+    }
+  }
 };
 </script>

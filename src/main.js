@@ -9,6 +9,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import '/src/assets/css/custom.css';
+
 library.add(fas)
 library.add(far)
 Vue.component('font-awesome-icon', FontAwesomeIcon)

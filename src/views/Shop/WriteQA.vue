@@ -1,9 +1,8 @@
 <template>
-  <div style="width: 100%">
+  <div>
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>문의 작성</h4> </v-card-title>
       <br />
-      <v-container class="pa-1">
         <v-card style="padding: 20px">
           <v-row>
             <v-col cols="12" sm="5">
@@ -19,7 +18,7 @@
               <v-select
                 v-model="titleType"
                 :items="itmes"
-                label=" TYPE"
+                label=" 문의 종류"
                 required
               ></v-select>
             </v-col>
@@ -28,14 +27,14 @@
             rows="10"
             row-height="15"
             outlined
-            label="문의내용을 입력해주세요."
+            label="문의 내용을 입력해주세요."
             v-model="content"
           ></v-textarea>
-          <v-col align="right">
-            <v-btn depressed @click="save">저장 </v-btn>
-          </v-col>
         </v-card>
-      </v-container>
+        <br />
+        <div align="right">
+          <v-btn dark color="hsl(231, 30%, 54%)" @click="save">작성 완료</v-btn>
+        </div>
     </v-card>
   </div>
 </template>

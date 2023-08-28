@@ -3,37 +3,42 @@
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>찜목록</h4> </v-card-title>
       <br />
-      <v-container class="pa-1">
-        <v-item-group v-model="selected" multiple>
-          <v-row>
-            <v-col
-              v-for="item in productList_shop"
-              :key="item.code"
-              cols="12"
-              md="3"
-            >
-              <v-item :value="item.code">
-                <v-img
-                  :src="require('@/assets/' + item.mainPhoto)"
-                  height="250"
-                  class="text-right pa-2"
-                  @click="detailPage(item.code)"
-                >
-                  <v-btn icon v-on:click.stop @click="addHeartList(item.code)">
-                    <v-icon>
-                      {{
-                        UserInfo.heartList.indexOf(item.code) !== -1
-                          ? "mdi-heart"
-                          : "mdi-heart-outline"
-                      }}
-                    </v-icon>
-                  </v-btn>
-                </v-img>
-              </v-item>
-            </v-col>
-          </v-row>
-        </v-item-group>
-      </v-container>
+      <v-card style="padding: 50px" class="mx-auto" v-if="productList_shop.length > 0">
+        <v-container class="pa-1">
+          <v-item-group v-model="selected" multiple>
+            <v-row>
+              <v-col
+                v-for="item in productList_shop"
+                :key="item.code"
+                cols="12"
+                md="3"
+              >
+                <v-item :value="item.code">
+                  <v-img
+                    :src="require('@/assets/' + item.mainPhoto)"
+                    height="250"
+                    class="text-right pa-2"
+                    @click="detailPage(item.code)"
+                  >
+                    <v-btn icon v-on:click.stop @click="addHeartList(item.code)">
+                      <v-icon>
+                        {{
+                          UserInfo.heartList.indexOf(item.code) !== -1
+                            ? "mdi-heart"
+                            : "mdi-heart-outline"
+                        }}
+                      </v-icon>
+                    </v-btn>
+                  </v-img>
+                </v-item>
+              </v-col>
+            </v-row>
+          </v-item-group>
+        </v-container>
+      </v-card>
+      <v-card style="padding: 50px;text-align: center;" class="mx-auto" v-else>
+        <p>찜 목록이 비어 있습니다.</p>
+      </v-card>
     </v-card>
   </div>
 </template>

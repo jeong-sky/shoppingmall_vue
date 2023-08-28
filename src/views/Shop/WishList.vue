@@ -3,7 +3,7 @@
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>장바구니</h4> </v-card-title>
       <br />
-      <v-card style="padding: 50px" class="mx-auto">
+      <v-card style="padding: 50px" class="mx-auto" v-if="this.$store.state.UserInfo.wishList.length > 0">
         <v-row
           v-for="(item, index) in this.$store.state.UserInfo.wishList"
           :key="index"
@@ -34,18 +34,16 @@
           </v-col>
         </v-row>
       </v-card>
+      <v-card style="padding: 50px;text-align: center;" class="mx-auto" v-else>
+        <p>장바구니가 비어 있습니다.</p>
+      </v-card>
       <br />
-      <v-row style="text-align: right">
-        <v-col cols="11">
-          <v-btn @click="order" dark color="hsl(231, 30%, 54%)"
-            >주문하기</v-btn
-          > </v-col
-        ><v-col cols="1">
-          <v-btn @click="deleteWishitems" dark color="hsl(231, 30%, 54%)"
-            >삭제</v-btn
-          >
-        </v-col>
-      </v-row>
+      <div align="right">
+        <v-btn depressed @click="deleteWishitems" style="margin-right:10px;">삭제</v-btn>
+        <v-btn @click="order" dark color="hsl(231, 30%, 54%)">
+          주문하기
+        </v-btn> 
+      </div>
     </v-card>
   </div>
 </template>
@@ -67,11 +65,20 @@ export default {
       Route.push({ name: "ProductDetail", query: code });
     },
     order() {
-      console.log(this.checked);
-      Route.push({ name: "OrderForm", query: this.checked });
+      if(this.checked.length < 1) {
+        alert("주문할 상품을 선택해주세요.");
+
+      } else {
+        Route.push({ name: "OrderForm", query: this.checked });
+      }
     },
     deleteWishitems() {
-      this.$store.dispatch("deleteWishItems", this.checked);
+      if(this.checked.length < 1) {
+        alert("삭제할 상품을 선택해주세요.");
+        
+      } else if(confirm("상품을 장바구니에서 삭제하시겠습니까?")) {
+        this.$store.dispatch("deleteWishItems", this.checked);
+      }
     },
   },
   created() {

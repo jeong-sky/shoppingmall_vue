@@ -16,10 +16,7 @@ export default {
   },
   methods: {},
   created() {
-    if (
-      this.UserInfo.token === null &&
-      localStorage.getItem("token") !== null
-    ) {
+    if (this.UserInfo.token === null && localStorage.getItem("token") !== null) {
       this.$store.dispatch("UnpackToken");
     }
   },

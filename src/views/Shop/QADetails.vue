@@ -3,27 +3,26 @@
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>게시글</h4> </v-card-title>
       <br />
-      <v-container class="pa-1">
         <v-card style="padding: 20px">
           <v-list>
             <v-list-item>
-              <v-list-item-content
-                ><p class="text-md-center">
-                  {{ QAPost.title }}
-                </p></v-list-item-content
-              >
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item>
-              <v-list-item-action> 작성일시 : </v-list-item-action>
               <v-list-item-content>
-                {{ QAPost.datetime }}
+                <p class="text-md-center" style="font-size:20px">
+                  {{ QAPost.title }}
+                </p>
               </v-list-item-content>
             </v-list-item>
+            <v-divider></v-divider>
             <v-list-item>
               <v-list-item-action> 작성자 : </v-list-item-action>
               <v-list-item-content>
                 {{ QAPost.writer }}
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-action> 작성 일자 : </v-list-item-action>
+              <v-list-item-content>
+                {{ QAPost.datetime }}
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
@@ -33,11 +32,11 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-col align="right">
-          <v-btn depressed @click="WriteAnswer">답글달기 </v-btn>
-          <v-btn depressed @click="DeletePost">삭제 </v-btn>
-        </v-col>
-      </v-container>
+        <br />
+        <div align="right">
+          <v-btn depressed @click="DeletePost" style="margin-right:10px;">삭제 </v-btn>
+          <v-btn dark color="hsl(231, 30%, 54%)" @click="WriteAnswer">답변 작성</v-btn>
+        </div>
     </v-card>
   </div>
 </template>

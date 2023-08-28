@@ -1,20 +1,20 @@
 <template>
   <div>
-    <v-card elevation="0" style="padding: 50px" class="mx-auto">
+    <v-card elevation="0" class="mx-auto pd-3">
       <v-row>
-        <v-col cols="6">
-          <v-img
+        <div class="prd-info">
+          <v-img v-if="productDetails_shop.mainPhoto"
             class="mx-auto"
             :src="require('@/assets/' + productDetails_shop.mainPhoto)"
             width="400"
             height="400"
           ></v-img>
-        </v-col>
-        <v-col>
+        </div>
+        <div class="prd-info">
           <v-card elevation="0" class="mx-auto">
             <v-card-title>{{ productDetails_shop.name }}</v-card-title>
             <v-card-text>
-              <v-row align="center" class="mx-0">
+              <v-row class="mx-0">
                 <v-rating
                   :value="productDetails_shop.rating"
                   color="amber"
@@ -23,145 +23,144 @@
                   readonly
                   size="14"
                 ></v-rating>
-
                 <div class="grey--text ms-4">
                   {{ productDetails_shop.rating }}
                 </div>
               </v-row>
-              <br />
-              <div class="my-4 text-subtitle-1">
-                $ • {{ productDetails_shop.price }}
+              <v-row>
+                <v-col cols="6">PRICE</v-col>
+                <v-col cols="6">
+                  {{ productDetails_shop.price }}원
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="6">상품요약정보</v-col>
+                <v-col cols="6">
+                  {{ productDetails_shop.descr }}
+                </v-col>
+              </v-row>
+              <br/>
+            </v-card-text>
+
+            <v-container fluid>
+              <div align="left">
+                <v-select
+                  :items="productDetails_shop.options_s"
+                  label="Options"
+                  dense
+                  solo
+                  v-model="option"
+                  @change="addOption()"
+                  style="width: 500px;"
+                ></v-select>
               </div>
-              <div>
+              <v-card style="width: 500px;" class="mg-b-30" v-for="(item, index) in selectedOption" :key="index">
                 <v-row>
-                  <v-col cols="2">배송비</v-col>
-                  <v-col cols="5">
-                    {{ productDetails_shop.shipping }}
+                  <v-col cols="10">
+                    <v-card-text> 선택 : {{ item.option }} </v-card-text>
+                  </v-col>
+                  <v-col>
+                    <v-btn depressed small @click="deleteOption(item, index)">x</v-btn>
                   </v-col>
                 </v-row>
-              </div>
+                <v-row>
+                  <v-col cols="1"
+                    ><v-btn depressed @click="minusCount(index)">-</v-btn></v-col
+                  >
+                  <v-col cols="2" align="right">{{
+                    selectedOption[index].count
+                  }}</v-col>
+                  <v-col cols="1"
+                    ><v-btn depressed @click="addCount(index)">+</v-btn></v-col
+                  >
+                  <v-col cols="6" align="right">
+                    $ •
+                    {{
+                      productDetails_shop.price * selectedOption[index].count
+                    }}</v-col
+                  >
+                </v-row>
+              </v-card>
+          </v-container>
 
-              <br />
-              <div>{{ productDetails_shop.descr }}</div>
-
-              <br />
-            </v-card-text>
-            <v-container fluid>
-              <v-row align="center">
-                <v-col class="d-flex" cols="12" sm="6">
-                  <v-select
-                    :items="productDetails_shop.options_s"
-                    label="Options"
-                    dense
-                    solo
-                    v-model="option"
-                    @change="addOption()"
-                  ></v-select>
-                </v-col>
-              </v-row>
-            </v-container>
-            <v-card v-for="(item, index) in selectedOption" :key="index">
-              <v-row>
-                <v-col cols="10">
-                  <v-card-text> 선택 : {{ item.option }} </v-card-text>
-                </v-col>
-                <v-col>
-                  <v-btn depressed small @click="deleteOption(index)">x</v-btn>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="1"
-                  ><v-btn depressed @click="minusCount(index)">-</v-btn></v-col
+            <v-row class="pd-3 mg-t-10">
+              <v-col cols="2">
+                <v-btn color="deep-purple lighten-2" text @click="order()">바로구매</v-btn>
+              </v-col>
+              <v-col cols="2">
+                <v-btn
+                  color="deep-purple lighten-2"
+                  text
+                  @click="insertWishList()"
                 >
-                <v-col cols="2" style="text-align: right">{{
-                  selectedOption[index].count
-                }}</v-col>
-                <v-col cols="1"
-                  ><v-btn depressed @click="addCount(index)">+</v-btn></v-col
+                  장바구니
+                </v-btn>
+              </v-col>
+              <v-col cols="2">
+                <v-btn
+                  color="deep-purple lighten-2"
+                  text
+                  @click="addHeartList(productDetails_shop.code)"
                 >
-                <v-col cols="6" style="text-align: right">
-                  $ •
-                  {{
-                    productDetails_shop.price * selectedOption[index].count
-                  }}</v-col
-                >
-              </v-row>
-            </v-card>
-            <br />
-            <v-card-actions>
-              <v-btn color="deep-purple lighten-2" text @click="order()">
-                바로구매
-              </v-btn>
-              <v-btn
-                color="deep-purple lighten-2"
-                text
-                @click="insertWishList()"
-              >
-                장바구니
-              </v-btn>
-              <v-btn
-                color="deep-purple lighten-2"
-                text
-                @click="addHeartList(productDetails_shop.code)"
-              >
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-            </v-card-actions>
+                  <v-icon>mdi-heart</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card>
-        </v-col>
+        </div>
       </v-row>
-      <v-divider class="mx-4"></v-divider>
-
-      <v-card-title>상품요약정보</v-card-title>
-
-      <v-card-text>
-        <div>
-          <v-row>
-            <v-col cols="3">제품소재</v-col>
-            <v-col cols="5">
-              {{ productDetails_shop.material }}
-            </v-col>
-          </v-row>
-        </div>
-        <br />
-        <div>
-          <v-row>
-            <v-col cols="3">치수</v-col>
-            <v-col cols="5">
-              {{ productDetails_shop.size }}
-            </v-col>
-          </v-row>
-        </div>
-        <br />
-        <div>
-          <v-row>
-            <v-col cols="3">제조사</v-col>
-            <v-col cols="5">
-              {{ productDetails_shop.manufacturer }}
-            </v-col>
-          </v-row>
-        </div>
-        <br />
-        <div>
-          <v-row>
-            <v-col cols="3">세탁방법 및 취습시 주의사항</v-col>
-            <v-col cols="5">
-              {{ productDetails_shop.caution }}
-            </v-col>
-          </v-row>
-        </div>
-        <br /><br />
-        {{ productDetails_shop.detail_desc }}
-        <br /><br />
-        <v-col
-          v-for="(item, index) in productDetails_shop.file_list"
-          :key="index"
-          style="padding: 100px"
-        >
-          <v-img :src="require('@/assets/' + item)"> </v-img>
-        </v-col>
-      </v-card-text>
     </v-card>
+    
+    <v-divider class="mx-4 mg-t-50"></v-divider>
+
+    <v-card align='center'>
+     
+      <v-card-text align='center'>
+        <v-row class="mg-t-10 mg-b-30">
+          <v-col cols="3"><h2>상품요약정보</h2></v-col>
+          <v-col cols="9"></v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3">제품소재</v-col>
+          <v-col cols="9">
+            {{ productDetails_shop.material }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="3">치수</v-col>
+          <v-col cols="9">
+            {{ productDetails_shop.size }}
+          </v-col>
+        </v-row>   
+        <v-row>
+          <v-col cols="3">제조사</v-col>
+          <v-col cols="9">
+            {{ productDetails_shop.manufacturer }}
+          </v-col>
+        </v-row>   
+        <v-row>
+          <v-col cols="3">세탁방법 및 취습시 주의사항</v-col>
+          <v-col cols="9">
+            {{ productDetails_shop.caution }}
+          </v-col>
+        </v-row>     
+        <v-row>
+          <v-col cols="3">상품 상세 설명</v-col>
+          <v-col cols="9">
+            {{ productDetails_shop.detail_desc }}
+          </v-col>
+        </v-row>
+      </v-card-text>
+
+      <v-col
+        v-for="(item, index) in productDetails_shop.file_list"
+        :key="index"
+        style="padding: 200px"
+      >
+        <v-img :src="require('@/assets/' + item)"> </v-img>
+      </v-col>
+    </v-card>    
+
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>상품후기</h4> </v-card-title>
       <br />
@@ -229,7 +228,12 @@ export default {
         this.selectedOption[index].count--;
       }
     },
-    deleteOption(index) {
+    deleteOption(item, index) {
+      this.select.forEach((ele, idx) => {
+        if(ele === item.option) {
+          this.select.splice(idx, 1);
+        }
+      })
       this.selectedOption.splice(index, 1);
     },
     wishList() {

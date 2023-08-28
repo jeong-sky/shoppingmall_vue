@@ -1,12 +1,10 @@
 <template>
   <div>
-    <v-divider></v-divider>
-    <v-list-item>
-      <v-list-item-action style="width: 150px"> 이름 </v-list-item-action>
+    <v-list-item style="margin-left:5%;margin-right:5%;">
+      <v-list-item-action style="min-width: 20%"> 이름 </v-list-item-action>
       <v-list-item-content>
         <v-list-item-title>
           <v-text-field
-            style="width: 150px"
             v-model="receiver_name"
             placeholder="받으시는 분 성함"
           >
@@ -14,53 +12,47 @@
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-    <v-divider></v-divider>
-    <v-list-item style="height: 200px">
-      <v-list-item-action style="width: 150px"> 주소 </v-list-item-action>
+    <v-list-item style="margin-left:5%;margin-right:5%;">
+      <v-list-item-action style="min-width: 20%"> 주소 </v-list-item-action>
       <v-list-item-content>
-        <v-row>
-          <v-col cols="4">
-            <input
-              type="text"
-              v-model="receiver_postcode"
-              placeholder="우편번호"
-            />
-          </v-col>
-          <v-col>
-            <v-btn small @click="execDaumPostcode()">우편번호 찾기</v-btn>
-          </v-col>
-        </v-row>
-        <br />
-        <input type="text" v-model="receiver_address" placeholder="주소" />
-        <br />
-        <input
-          type="text"
+        <div style="display: flex;">
+          <v-text-field
+            v-model="receiver_postcode"
+            placeholder="우편번호"
+          >
+          </v-text-field>
+          <v-btn depressed @click="execDaumPostcode()" style="margin-left:10px">우편번호 찾기</v-btn>
+        </div>
+        <v-text-field
+          style="display: contents;"
+          v-model="receiver_address" 
+          placeholder="주소"
+        >
+        </v-text-field>
+        <v-text-field
+          style="display: contents;"
           v-model="receiver_detailAddress"
           placeholder="상세주소"
-        /><br />
-        <br />
-        <input
-          type="text"
+        >
+        </v-text-field>
+        <v-text-field
+          style="display: contents;"
           v-model="receiver_extraAddress"
           placeholder="참고항목"
-        />
+        >
+        </v-text-field>
       </v-list-item-content>
     </v-list-item>
-
-    <v-divider></v-divider>
-
-    <v-list-item>
-      <v-list-item-action style="width: 150px"> 연락처 </v-list-item-action>
+    <v-list-item style="margin-left:5%;margin-right:5%;">
+      <v-list-item-action style="min-width: 20%"> 연락처 </v-list-item-action>
       <v-list-item-content>
         <v-list-item-title>
           <v-text-field
-            style="width: 150px"
             v-model="receiver_phone"
             placeholder="받으시는 분 연락처"
           >
           </v-text-field>
         </v-list-item-title>
-        <v-list-item-subtitle> "-" 표시는 생략</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
   </div>

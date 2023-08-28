@@ -1,0 +1,30 @@
+.login-form {
+    max-width: 500px;
+    margin-top:5%;
+    margin-bottom:5%;
+}
+.sub-menu {
+    max-width:300px;
+    width:100%;
+    padding:15px;
+    margin:2%;
+}
+.table {
+  min-width:72%;
+  margin:2%;
+}
+.pd-3 {
+    padding: 3%;
+}
+.prd-info {
+    min-width: 50%;
+}
+.mg-t-10 {
+    margin-top: 10px;
+}
+.mg-b-30 {
+    margin-bottom: 30px;
+}
+.mg-t-50 {
+    margin-top: 50px;
+}

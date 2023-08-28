@@ -3,8 +3,7 @@
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>문의 게시판</h4> </v-card-title>
       <br />
-
-      <v-container class="pa-1">
+      <v-card style="padding: 20px">
         <v-card-title>
           <v-text-field
             v-model="search"
@@ -31,12 +30,15 @@
             class="pa-3"
           ></v-switch>
         </template>
-      </v-container>
+      </v-card>
+      <br/>
+      <div align="right">
+        <v-btn depressed @click="DeleteSelectedPost" style="margin-right:10px">삭제</v-btn>
+        <v-btn @click="WriteQA" dark color="hsl(231, 30%, 54%)">
+          글 작성
+        </v-btn> 
+      </div>
     </v-card>
-    <v-col align="right">
-      <v-btn depressed @click="WriteQA"> 글작성 </v-btn>
-      <v-btn depressed @click="DeleteSelectedPost">삭제</v-btn>
-    </v-col>
   </div>
 </template>
 <script>
