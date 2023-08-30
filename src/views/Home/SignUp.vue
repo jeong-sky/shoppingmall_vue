@@ -41,7 +41,8 @@
                 name="Phone"
                 prepend-icon="mdi-phone"
                 v-model="Phone"
-                type="text"
+                @input="onPhoneInput"
+                oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
               ></v-text-field>
             </v-form>
           </v-card-text>
@@ -57,6 +58,8 @@
 
 <script>
 import { mapActions } from "vuex";
+import { formatPhoneNumber, removeHyphens } from "@/utils/common.js";
+
 export default {
   name: "SignUp",
   data() {
@@ -74,9 +77,12 @@ export default {
         username: this.UserId,
         password: this.UserPassword,
         name: this.UserName,
-        phone: this.Phone,
+        phone: removeHyphens(this.Phone),
       };
       this.NewUsers(Users);
+    },
+    onPhoneInput() {
+      this.Phone = formatPhoneNumber(this.Phone);
     },
   },
 };

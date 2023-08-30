@@ -50,6 +50,7 @@
           <v-text-field
             v-model="receiver_phone"
             placeholder="받으시는 분 연락처"
+            oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
           >
           </v-text-field>
         </v-list-item-title>
@@ -58,6 +59,8 @@
   </div>
 </template>
 <script>
+import { formatPhoneNumber, removeHyphens } from "@/utils/common.js";
+
 export default {
   data() {
     return {
@@ -77,10 +80,10 @@ export default {
     },
     receiver_phone: {
       get() {
-        return this.$store.state.orderInfo.receiverInfo.receiver_phone;
+        return formatPhoneNumber(this.$store.state.orderInfo.receiverInfo.receiver_phone);
       },
       set(value) {
-        this.$store.commit("update_receiver_phone", value);
+        this.$store.commit("update_receiver_phone", removeHyphens(value));
       },
     },
     receiver_postcode: {

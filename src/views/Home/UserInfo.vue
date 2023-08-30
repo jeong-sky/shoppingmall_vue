@@ -70,9 +70,10 @@
             <v-list-item-content>
               <v-list-item-title>
                 <v-text-field
-
                   v-model="phone"
                   :placeholder="UserInfo.phone"
+                  @input="onPhoneInput"
+                  oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                 >
                 </v-text-field>
               </v-list-item-title>
@@ -124,6 +125,8 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import { formatPhoneNumber, removeHyphens } from "@/utils/common.js";
+
 export default {
   data() {
     return {
@@ -149,7 +152,7 @@ export default {
       "Add_Role",
       "Delete_Role",
       "KakaoUnlink",
-      "Update_UserInfo",
+      "Update_UserInfo"
     ]),
     //카카오연동해지
     kakaoUnlink() {
@@ -223,7 +226,7 @@ export default {
         userInfo.name = this.UserInfo.name;
       }
       if (!!this.phone) {
-        userInfo.phone = this.phone;
+        userInfo.phone = removeHyphens(this.phone);
       } else {
         userInfo.phone = this.UserInfo.phone;
       }
@@ -249,13 +252,16 @@ export default {
       this.modifyAddress = true;
       this.postcode = null;
       this.address = "";
+    },
+    onPhoneInput() {
+      this.phone = formatPhoneNumber(this.phone);
     }
   },
   created() {
     // UserInfo가 정의되었을 때에만 값을 초기화
     if (this.UserInfo) {
       this.name = this.UserInfo.name;
-      this.phone = this.UserInfo.phone;
+      this.phone = formatPhoneNumber(this.UserInfo.phone);
       this.postcode = this.UserInfo.postcode;
       this.address = this.UserInfo.address;
     }

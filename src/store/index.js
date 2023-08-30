@@ -41,7 +41,7 @@ export default new Vuex.Store({
       name:'', options:[], options_s:[], point:'', price:0, rating:0, sale:false, shipping:'', size:'', stock:0, type:[], type_s:''
     },
     items: [],
-    orderRequest: null,
+    orderRequest: [],
     orderInfo: {
       products: [], userInfo: null,
       receiverInfo: {
@@ -911,7 +911,7 @@ export default new Vuex.Store({
             console.log("Get_Ranking_List_err")
           })
       })
-    },
+    }
   },
   modules: {
   }

@@ -87,6 +87,8 @@
                     <v-text-field
                       v-model="phone"
                       :placeholder="UserInfo.phone"
+                      @input="onPhoneInput"
+                      oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                     >
                     </v-text-field>
                   </v-list-item-title>
@@ -185,6 +187,8 @@
 <script>
 import { mapState } from "vuex";
 import ReceiverInfo from "@/views/Shop/ReceiverInfo";
+import { formatPhoneNumber, removeHyphens } from "@/utils/common.js";
+
 export default {
   data() {
     return {
@@ -282,7 +286,7 @@ export default {
         userInfo: {
           username: this.UserInfo.id,
           name: this.name,
-          phone: this.phone,
+          phone: removeHyphens(this.phone),
           address:
             this.address + " " + this.detailAddress + " " + this.extraAddress,
           postcode: this.postcode,
@@ -315,6 +319,9 @@ export default {
         this.$store.dispatch("Buy_items", info);
       }
     },
+    onPhoneInput() {
+      this.phone = formatPhoneNumber(this.phone);
+    }
   },
   created() {
     this.$store.dispatch("Get_OrderList", this.$route.query);
