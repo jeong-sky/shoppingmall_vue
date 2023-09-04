@@ -16,7 +16,7 @@
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title align="right">
-                  {{ UserInfo.point }}
+                  {{ formatPrice(UserInfo.point) }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -35,7 +35,7 @@
                   문의 게시판
                 </v-list-item-subtitle>
               </v-list-item>
-              <v-list-item @click="unlink(UserInfo.name)">
+              <v-list-item @click="unlink(UserInfo.id)">
                 <v-list-item-subtitle>
                   <br />
                   회원 탈퇴
@@ -63,6 +63,8 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Route from "@/router/index";
+import { formatPrice } from "@/utils/common.js";
+
 export default {
   data() {
     return {
@@ -81,13 +83,14 @@ export default {
   },
   methods: {
     ...mapActions(["Delete_User"]),
-    unlink(username) {
+    formatPrice,
+    unlink(id) {
       if (this.UserInfo.oauth === "kakao") {
         alert(
           "카카오 연동이 되어있습니다. 정보수정에서 연동해지시 자동탈퇴처리됩니다."
         );
-      } else {
-        this.Delete_User(username);
+      } else if(confirm("삭제된 회원정보는 복구가 불가능합니다. 탈퇴 하시겠습니까?")) {
+        this.Delete_User(id);
       }
     },
 

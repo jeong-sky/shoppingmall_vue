@@ -42,14 +42,52 @@
                 <v-list-item-content>
                   <v-list-item-title>
                     <v-text-field
-                      v-model="name"
-                      :placeholder="UserInfo.name"
-                    >
+                      v-model="name">
                     </v-text-field>
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
+
               <v-list-item style="margin-left:5%;margin-right:5%;">
+                <v-list-item-action style="min-width: 20%"> 주소 </v-list-item-action>
+                <v-list-item-content v-if="!modifyAddress" style="display: block;">
+                    {{ address }}
+                    <br/>
+                  <v-btn @click="changeAddress()" depressed class="mg-t-10">
+                    주소 변경
+                  </v-btn> 
+                </v-list-item-content>
+                <v-list-item-content v-else>
+                  <div style="display: flex;">
+                    <v-text-field
+                      v-model="postcode"
+                      placeholder="우편번호"
+                    >
+                    </v-text-field>
+                    <v-btn depressed @click="execDaumPostcode()" style="margin-left:10px">우편번호 찾기</v-btn>
+                  </div>
+                  <v-text-field
+                    style="display: contents;"
+                    v-model="address"
+                    placeholder="주소"
+                  >
+                  </v-text-field>
+                  <v-text-field
+                    style="display: contents;"
+                    v-model="detailAddress"
+                    placeholder="상세 주소"
+                  >
+                  </v-text-field>
+                  <v-text-field
+                    style="display: contents;"
+                    v-model="extraAddress"
+                    placeholder="참고 항목"
+                  >
+                  </v-text-field>
+                </v-list-item-content>
+              </v-list-item>
+
+              <!-- <v-list-item style="margin-left:5%;margin-right:5%;">
                 <v-list-item-action style="min-width: 20%"> 주소 </v-list-item-action>
                 <v-list-item-content>
                   <div style="display: flex;">
@@ -79,14 +117,14 @@
                   >
                   </v-text-field>
                 </v-list-item-content>
-              </v-list-item>
+              </v-list-item> -->
+
               <v-list-item style="margin-left:5%;margin-right:5%;">
                 <v-list-item-action style="min-width: 20%"> 연락처 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>
                     <v-text-field
                       v-model="phone"
-                      :placeholder="UserInfo.phone"
                       @input="onPhoneInput"
                       oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                     >
@@ -193,7 +231,7 @@ import { formatPhoneNumber, removeHyphens, formatPrice } from "@/utils/common.js
 export default {
   data() {
     return {
-      check: false,
+      check: true,
       name: null,
       phone: null,
       postcode: null,
@@ -202,6 +240,7 @@ export default {
       extraAddress: "",
       price_: 0,
       point: null,
+      modifyAddress: false
     };
   },
   computed: {
@@ -295,8 +334,7 @@ export default {
           username: this.UserInfo.id,
           name: this.name,
           phone: removeHyphens(this.phone),
-          address:
-            this.address + " " + this.detailAddress + " " + this.extraAddress,
+          address: this.address,
           postcode: this.postcode,
         },
         payway: "카카오페이",
@@ -309,10 +347,8 @@ export default {
         alert("주문자 이름을 입력해주세요.");
       } else if (this.phone === null) {
         alert("주문자 연락처를 입력해주세요.");
-      } else if (this.address === "") {
+      } else if (!this.postcode && this.address === "") {
         alert("주문자 주소를 입력해주세요.");
-      } else if (this.postcode === null) {
-        alert("주문자 우편번호를 입력해주세요.");
       } else if (
         this.orderInfo.receiverInfo.receiver_name === "" ||
         this.orderInfo.receiverInfo.receiver_phone === "" ||
@@ -323,17 +359,37 @@ export default {
         } else {
           alert("수취인 정보를 정확히 입력해주세요.");
         }
-      } else {
-        this.$store.dispatch("Buy_items", info);
       }
+      
+      if(!this.postcode) {
+        userInfo.postcode = this.UserInfo.postcode;
+      }
+      if(this.address === "") {
+        userInfo.address = this.UserInfo.address;
+      }
+
+      this.$store.dispatch("Buy_items", info);
+      
     },
     onPhoneInput() {
       this.phone = formatPhoneNumber(this.phone);
-    }
+    },
+    changeAddress() {
+      this.modifyAddress = true;
+      this.postcode = null;
+      this.address = "";
+    },
   },
   created() {
     this.$store.dispatch("Get_OrderList", this.$route.query);
     this.price_ = 0;
+
+    if (this.UserInfo) {
+      this.name = this.UserInfo.name;
+      this.phone = formatPhoneNumber(this.UserInfo.phone);
+      this.postcode = this.UserInfo.postcode;
+      this.address = this.UserInfo.address;
+    }
   },
 };
 </script>
