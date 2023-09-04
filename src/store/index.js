@@ -637,6 +637,7 @@ export default new Vuex.Store({
       })
     },
     Get_OrderList({ commit }, payload) {
+      commit("SET_ORDER_REQUEST", [])
       return new Promise((resolve, reject) => {
         instance.post('api/user/orderlist', payload)
           .then(Response => {
