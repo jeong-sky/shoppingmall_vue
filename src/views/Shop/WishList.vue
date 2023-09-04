@@ -29,7 +29,7 @@
           </v-col>
           <v-col>
             <v-card-text
-              >판매가 : {{ item.product.price * item.count }}
+              >판매가 : {{ formatPrice(item.product.price * item.count) }}
             </v-card-text>
           </v-col>
         </v-row>
@@ -50,6 +50,8 @@
 <script>
 import Route from "@/router/index";
 import { mapState } from "vuex";
+import { formatPrice } from "@/utils/common.js"
+
 export default {
   data() {
     return {
@@ -61,6 +63,7 @@ export default {
     ...mapState(["UserInfo"]),
   },
   methods: {
+    formatPrice,
     detailPage(code) {
       Route.push({ name: "ProductDetail", query: code });
     },
@@ -69,6 +72,7 @@ export default {
         alert("주문할 상품을 선택해주세요.");
 
       } else {
+        console.log(this.checked)
         Route.push({ name: "OrderForm", query: this.checked });
       }
     },

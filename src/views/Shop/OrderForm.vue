@@ -24,7 +24,7 @@
           </v-col>
           <v-col cols="2">
             <v-card-text
-              >판매가 : {{ item.product.price * item.count }}
+              >판매가 : {{ formatPrice(item.product.price * item.count) }}
             </v-card-text>
           </v-col>
         </v-row>
@@ -128,8 +128,9 @@
                       <v-col cols="12" md="9">
                         <v-text-field
                           v-model="point"
-                          @change="checkPoint"
                           placeholder="0"
+                          @input="checkPoint"
+                          oninput="javascript: this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                         ></v-text-field>
                       </v-col>
                       점
@@ -142,7 +143,7 @@
                   보유 포인트
                 </v-list-item-action>
                 <v-list-item-content>
-                  {{ this.UserInfo.point }}점
+                  {{ formatPrice(this.UserInfo.point) }}점
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -154,12 +155,12 @@
                   결제금액
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-card-text>상품 : {{ this.price }}</v-card-text>
+                  <v-card-text>상품 : {{ formatPrice(this.price) }}</v-card-text>
                   <v-card-text
                     >배송비 :
-                    {{ this.shipping === 0 ? "무료배송" : 2500 }}
+                    {{ this.shipping === 0 ? "무료배송" : '2,500' }}
                   </v-card-text>
-                  <v-card-text>총계 :{{ this.total }} </v-card-text>
+                  <v-card-text>총계 : {{ this.total ? formatPrice(this.total) : '0' }} </v-card-text>
                 </v-list-item-content>
               </v-list-item>
               <v-divider></v-divider>
@@ -187,7 +188,7 @@
 <script>
 import { mapState } from "vuex";
 import ReceiverInfo from "@/views/Shop/ReceiverInfo";
-import { formatPhoneNumber, removeHyphens } from "@/utils/common.js";
+import { formatPhoneNumber, removeHyphens, formatPrice } from "@/utils/common.js";
 
 export default {
   data() {
@@ -232,7 +233,12 @@ export default {
     },
     total: {
       get() {
-        return this.price + this.shipping - this.point;
+        if(this.price + this.shipping - this.point < 0) {
+          return this.price + this.shipping;
+          
+        } else {
+          return this.price + this.shipping - this.point;
+        }
       },
     },
   },
@@ -240,6 +246,7 @@ export default {
     ReceiverInfo,
   },
   methods: {
+    formatPrice,
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
@@ -275,8 +282,9 @@ export default {
       if (this.point > this.UserInfo.point) {
         alert("보유포인트가 부족합니다.");
         this.point = 0;
-      }
-      if (this.point > this.price + this.shipping) {
+
+      } else if (this.point > this.price + this.shipping) {
+        alert("결제 금액 아래로 설정이 가능합니다.");
         this.point = this.price + this.shipping;
       }
     },

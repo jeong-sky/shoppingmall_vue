@@ -30,7 +30,7 @@
               <v-row>
                 <v-col cols="6">PRICE</v-col>
                 <v-col cols="6">
-                  {{ productDetails_shop.price }}원
+                  {{ formatPrice(productDetails_shop.price) }}원
                 </v-col>
               </v-row>
               <v-row>
@@ -76,7 +76,7 @@
                   <v-col cols="6" align="right">
                     $ •
                     {{
-                      productDetails_shop.price * selectedOption[index].count
+                      formatPrice(productDetails_shop.price * selectedOption[index].count)
                     }}</v-col
                   >
                 </v-row>
@@ -114,39 +114,37 @@
     <v-divider class="mx-4 mg-t-50"></v-divider>
 
     <v-card align='center'>
-     
       <v-card-text align='center'>
-        <v-row class="mg-t-10 mg-b-30">
-          <v-col cols="3"><h2>상품요약정보</h2></v-col>
-          <v-col cols="9"></v-col>
-        </v-row>
+        <v-card-title class="mg-t-10 mg-b-30" style="display:block;">
+          <h3>상품요약정보</h3>
+        </v-card-title>
         <v-row>
-          <v-col cols="3">제품소재</v-col>
-          <v-col cols="9">
+          <v-col cols="5">제품소재</v-col>
+          <v-col cols="5">
             {{ productDetails_shop.material }}
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="3">치수</v-col>
-          <v-col cols="9">
+          <v-col cols="5">치수</v-col>
+          <v-col cols="5">
             {{ productDetails_shop.size }}
           </v-col>
         </v-row>   
         <v-row>
-          <v-col cols="3">제조사</v-col>
-          <v-col cols="9">
+          <v-col cols="5">제조사</v-col>
+          <v-col cols="5">
             {{ productDetails_shop.manufacturer }}
           </v-col>
         </v-row>   
         <v-row>
-          <v-col cols="3">세탁방법 및 취습시 주의사항</v-col>
-          <v-col cols="9">
+          <v-col cols="5">세탁방법 및 취습시 주의사항</v-col>
+          <v-col cols="5">
             {{ productDetails_shop.caution }}
           </v-col>
         </v-row>     
         <v-row>
-          <v-col cols="3">상품 상세 설명</v-col>
-          <v-col cols="9">
+          <v-col cols="5">상품 상세 설명</v-col>
+          <v-col cols="5">
             {{ productDetails_shop.detail_desc }}
           </v-col>
         </v-row>
@@ -177,6 +175,8 @@
 <script>
 import { mapState } from "vuex";
 import Route from "@/router/index";
+import { formatPrice } from "@/utils/common.js"
+
 export default {
   data() {
     return {
@@ -193,6 +193,7 @@ export default {
     };
   },
   methods: {
+    formatPrice,
     insertWishList() {
       if (this.UserInfo.login_success === true) {
         if (this.selectedOption.length !== 0) {

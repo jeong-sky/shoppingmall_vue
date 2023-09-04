@@ -25,7 +25,7 @@
         </v-col>
         <v-col>
           <v-card-text
-            >판매가 : {{ item.product.price * item.count }}
+            >판매가 : {{ formatPrice(item.product.price * item.count) }}
           </v-card-text>
         </v-col>
       </v-row>
@@ -33,11 +33,16 @@
   </div>
 </template>
 <script>
+import { formatPrice } from "@/utils/common.js"
+
 export default {
   data() {
     return {
       item: this.$route.query,
     };
   },
+  methods: {
+    formatPrice,
+  }
 };
 </script>

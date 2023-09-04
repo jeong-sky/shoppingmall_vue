@@ -14,3 +14,9 @@ export function removeHyphens(phoneNumber) {
     
     return phoneNumber.replace(/-/g, "");
 }
+
+export function formatPrice(price) {
+    if(!price) return;
+    
+    return price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+}
