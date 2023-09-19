@@ -44,18 +44,16 @@ export default {
   },
   methods: {
     WriteReview(item) {
-      let list = [];
       for (let i = 0; i < this.ReviewList.length; i++) {
-        list.push(this.ReviewList[i].order_num);
+        if(this.ReviewList[i].order_num === item.order_num && this.ReviewList[i].p_code === item.code) {
+          alert("이미 리뷰를 작성하셨습니다.");
+          return false;
+        }
       }
-      if (list.indexOf(item.order_num) === -1) {
-        Route.push({
-          name: "WriteReview",
-          query: { item: item, product: item.product },
-        });
-      } else {
-        alert("이미 리뷰를 작성하셨습니다.");
-      }
+      Route.push({
+        name: "WriteReview",
+        query: { item: item, product: item.product },
+      });
     },
   },
   created() {

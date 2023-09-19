@@ -3,7 +3,6 @@
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>후기 수정</h4> </v-card-title>
       <br />
-      <v-container class="pa-1">
         <v-card style="padding: 20px">
           <v-row>
             <v-col cols="1"> 별점: </v-col>
@@ -35,7 +34,6 @@
             <v-btn depressed @click="save">저장 </v-btn>
           </v-col>
         </v-card>
-      </v-container>
     </v-card>
   </div>
 </template>
@@ -43,10 +41,10 @@
 export default {
   data() {
     return {
-      title: "",
-      content: "",
+      title: this.$route.query.item.title,
+      content: this.$route.query.item.content,
       item: this.$route.query.item,
-      rating: 5,
+      rating: this.$route.query.item.rating,
     };
   },
 

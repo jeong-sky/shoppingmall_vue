@@ -3,12 +3,11 @@
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>후기글</h4> </v-card-title>
       <br />
-      <v-container class="pa-1">
         <v-card style="padding: 20px">
           <v-list>
             <v-list-item>
               <v-list-item-content
-                ><p class="text-md-center">
+                > <p class="text-md-center" style="font-size:20px">
                   {{ item.title }}
                 </p></v-list-item-content
               >
@@ -43,11 +42,11 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-col align="right">
-          <v-btn depressed @click="editReview">수정 </v-btn>
-          <v-btn depressed @click="DeleteReview">삭제 </v-btn>
-        </v-col>
-      </v-container>
+        <br />
+        <div align="right">
+          <v-btn depressed @click="DeleteReview" style="margin-right:10px;">삭제 </v-btn>
+          <v-btn dark color="hsl(231, 30%, 54%)" @click="editReview">수정</v-btn>
+        </div>
     </v-card>
   </div>
 </template>
@@ -66,13 +65,12 @@ export default {
   },
   methods: {
     DeleteReview() {
-      if (
-        this.UserInfo.auth.indexOf("ROLE_ADMIN") !== -1 ||
-        this.UserInfo.id === this.item.writer
-      ) {
-        let list = [];
-        list.push(this.item);
-        this.$store.dispatch("DeleteReviews", list);
+      if (this.UserInfo.auth.indexOf("ROLE_ADMIN") !== -1 || this.UserInfo.id === this.item.writer) {
+        if(confirm("삭제 후 복구가 불가능합니다. 삭제하시겠습니까?")) {
+          let list = [];
+          list.push(this.item);
+          this.$store.dispatch("DeleteReviews", list);
+        }
       } else {
         alert("삭제권한이 없습니다.");
       }

@@ -3,40 +3,38 @@
     <v-card elevation="0" style="padding: 50px" class="mx-auto">
       <v-card-title><h4>후기 작성</h4> </v-card-title>
       <br />
-      <v-container class="pa-1">
-        <v-card style="padding: 20px">
-          <p>상품명 : {{ this.item.product.name }}</p>
-          <v-row>
-            <v-col cols="1"> 별점: </v-col>
-            <v-rating
-              v-model="rating"
-              background-color="orange lighten-3"
-              color="orange"
-            ></v-rating>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="5">
-              <v-text-field
-                color="purple darken-2"
-                label="제목"
-                required
-                v-model="title"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-textarea
-            rows="10"
-            color="purple darken-2"
-            row-height="15"
-            outlined
-            label="답글내용을 입력해주세요."
-            v-model="content"
-          ></v-textarea>
-          <v-col align="right">
-            <v-btn depressed @click="save">저장 </v-btn>
+      <v-card style="padding: 20px">
+        <p>상품명 : {{ this.item.product.name }}</p>
+        <v-row>
+          <v-col cols="1"> 별점: </v-col>
+          <v-rating
+            v-model="rating"
+            background-color="orange lighten-3"
+            color="orange"
+          ></v-rating>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="5">
+            <v-text-field
+              color="purple darken-2"
+              label="제목"
+              required
+              v-model="title"
+            ></v-text-field>
           </v-col>
-        </v-card>
-      </v-container>
+        </v-row>
+        <v-textarea
+          rows="10"
+          color="purple darken-2"
+          row-height="15"
+          outlined
+          label="답글내용을 입력해주세요."
+          v-model="content"
+        ></v-textarea>
+        <v-col align="right">
+          <v-btn depressed @click="save">저장 </v-btn>
+        </v-col>
+      </v-card>
     </v-card>
   </div>
 </template>
