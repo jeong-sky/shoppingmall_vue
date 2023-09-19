@@ -260,7 +260,8 @@ export default new Vuex.Store({
       state.QABoardList = data
     },
     SET_QADETAILS(state, data) {
-      state.QAPost = data
+      state.QAPost = data;
+      console.log('data', data)
     },
     SET_REVIEW_LIST(state, data) {
       state.ReviewList = data
@@ -771,6 +772,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         instance.get('api/public/qa-post-details', { params: { num: payload } })
           .then(Response => {
+            console.log( Response.data)
             commit("SET_QADETAILS", Response.data)
             if (Route.currentRoute.matched[0].name === "Shop") {
               Route.push("/shop/qadetails")
