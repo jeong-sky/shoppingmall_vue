@@ -70,7 +70,7 @@ export default {
     return {
       search: "",
       headers: [
-        { text: "주문번호", value: "orderCode" },
+        // { text: "주문번호", value: "orderCode" },
         { text: "주문일시", value: "datetime" },
         { text: "진행상황", value: "state" },
         { text: "사용포인트", value: "point" },

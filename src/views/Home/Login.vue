@@ -49,7 +49,7 @@
       </v-flex>
     </v-layout>
     <br />
-    <a href="https://kauth.kakao.com/oauth/authorize?client_id=48b81001e6fa3b0a79971bff9c289b97&redirect_uri=http://3.39.35.173:80/auth&response_type=code">
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=48b81001e6fa3b0a79971bff9c289b97&redirect_uri=http://192.168.35.121:8080/auth&response_type=code">
       <img src="@/assets/kakao_login_medium_narrow.png" style="height: 40px" />
     </a>
   </v-container>

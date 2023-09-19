@@ -343,21 +343,23 @@ export default {
         check: this.check,
       };
 
-      if (this.name === null) {
+      if (!this.name || this.name === '') {
         alert("주문자 이름을 입력해주세요.");
+        return false;
       } else if (this.phone === null) {
         alert("주문자 연락처를 입력해주세요.");
+        return false;
       } else if (!this.postcode && this.address === "") {
         alert("주문자 주소를 입력해주세요.");
+        return false;
       } else if (
         this.orderInfo.receiverInfo.receiver_name === "" ||
         this.orderInfo.receiverInfo.receiver_phone === "" ||
         this.orderInfo.receiverInfo.receiver_postcode === ""
       ) {
-        if (this.check === true) {
-          this.$store.dispatch("Buy_items", info);
-        } else {
+        if (!this.check) {
           alert("수취인 정보를 정확히 입력해주세요.");
+          return false;
         }
       }
       
