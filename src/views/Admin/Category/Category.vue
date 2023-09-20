@@ -1,6 +1,15 @@
 <template>
-  <div style="width: 90%" class="mx-auto">
+  <div style="width: 100%; height:100%" class="mx-auto">
     <v-card>
+      <v-card-title>
+        <h4>분류 관리</h4> 
+        <div style="width: 100%" align="right">
+          <v-btn depressed style="margin-right:10px;" @click="deleteCategory">삭제</v-btn>
+          <v-btn dark color="hsl(231, 30%, 54%)" router :to="{ name: 'AddCategory' }">
+            최상위 카테고리 추가
+          </v-btn> 
+        </div>
+      </v-card-title>
       <v-card-title>
         <v-text-field
           v-model="search"
@@ -27,9 +36,9 @@
           ></v-switch>
         </template>
         <template v-slot:item.sale="{ item }">
-          <v-checkbox v-model="item.sale"></v-checkbox>
+          <v-checkbox v-model="item.sale" disabled></v-checkbox>
         </template>
-        <template v-slot:item.action="{ item }">
+        <template v-slot:item.action1="{ item }">
           <v-btn
             depressed
             small
@@ -43,8 +52,10 @@
                 depth: item.depth,
               },
             }"
-            >추가</v-btn
+            >하위 카테고리 추가</v-btn
           >
+        </template>
+        <template v-slot:item.action2="{ item }">
           <v-btn
             depressed
             small
@@ -60,13 +71,6 @@
         </template>
       </v-data-table>
     </v-card>
-    <br />
-    <v-col align="right">
-      <v-btn depressed router :to="{ name: 'AddCategory' }">
-        <font-awesome-icon icon="plus-square"
-      /></v-btn>
-      <v-btn depressed @click="deleteCategory">삭제</v-btn>
-    </v-col>
   </div>
 </template>
 <script>
@@ -89,7 +93,14 @@ export default {
         { text: "판매가능", value: "sale", width: "10%" },
         {
           text: "",
-          value: "action",
+          value: "action1",
+          sortable: false,
+          align: "right",
+          width: "10%",
+        },
+        {
+          text: "",
+          value: "action2",
           sortable: false,
           align: "right",
           width: "10%",
@@ -104,11 +115,7 @@ export default {
     ...mapActions(["Delete_SelectedCategory"]),
 
     deleteCategory() {
-      if (
-        confirm(
-          "해당 분류코드의 하위목록 모두 삭제되며,\n기본분류로 지정해놓은 상품 또한 삭제됩니다. 진행하시겠습니까?"
-        )
-      ) {
+      if (this.selected.length > 0 && confirm("해당 분류코드의 하위목록 모두 삭제되며,\n기본분류로 지정해놓은 상품 또한 삭제됩니다. 진행하시겠습니까?")) {
         for (let i = 0; i < this.selected.length; i++) {
           this.selected_code.push(this.selected[i].code);
         }

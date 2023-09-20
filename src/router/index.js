@@ -80,6 +80,7 @@ const routes = [
   //   ]
   // },
   { path: '/', redirect: '/shop' },
+  { path: '/admin', redirect: '/admin/user' },
   {
     path: '/shop',
     name: 'Shop',

@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <v-app id="inspire">
+
     <v-card>
       <v-navigation-drawer
         app
@@ -8,14 +10,6 @@
         value="true"
         mini-variant.sync="mini"
       >
-        <v-list-item router :to="{ path: '/' }">
-          <v-list-item-action>
-            <font-awesome-icon icon="long-arrow-alt-left" />
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
         <v-list-group>
           <v-list-item slot="activator">
             <v-list-item-action> </v-list-item-action>
@@ -119,6 +113,7 @@
       </v-container>
     </v-main>
     <Footer />
+    </v-app>
   </div>
 </template>
 

@@ -1,10 +1,15 @@
 <template>
-  <div style="width: 90%" class="mx-auto">
-    <v-col align="right">
-      <v-btn @click="movePage()" color="#E0F2F1" depressed>상품등록</v-btn>
-    </v-col>
-    <br />
+  <div style="width: 100%; height:100%" class="mx-auto">
     <v-card>
+      <v-card-title>
+        <h4>상품 관리</h4> 
+        <div style="width: 100%" align="right">
+          <v-btn dark color="hsl(231, 30%, 54%)" @click="movePage()">
+            상품 등록
+          </v-btn> 
+        </div>
+      </v-card-title>
+      <v-divider></v-divider>
       <v-card-title>
         <v-text-field
           v-model="search"
@@ -30,39 +35,21 @@
             class="pa-3"
           ></v-switch>
         </template>
-        <template v-slot:header.category
-          ><tr>
-            <td style="padding-left: 120px">분류</td>
-          </tr>
-          <tr>
-            <td style="padding-left: 40px">이미지</td>
-            <td style="padding-left: 40px">분류명</td>
-          </tr></template
-        >
-        <template v-slot:item.category="{ item }">
-          <tr style="height: 50px">
-            <td colspan="2" style="text-align: center">
-              {{ item.category }}
-            </td>
-          </tr>
-          <tr>
-            <td style="padding-left: 20px">
-              <v-img
+       <template v-slot:item.mainPhoto="{ item }">
+          <td>
+           <v-img
                 v-if="!!item.mainPhoto"
                 :src="require('@/assets/' + item.mainPhoto)"
                 width="60px"
                 height="60px"
               />
-            </td>
-            <td style="padding-left: 150px">{{ item.name }}</td>
-          </tr>
+          </td>
         </template>
         <template v-slot:item.sale="{ item }">
-          <v-checkbox v-model="item.sale"></v-checkbox>
+          <v-checkbox v-model="item.sale" disabled></v-checkbox>
         </template>
         <template v-slot:item.action="{ item }">
           <v-btn depressed small @click="getDetails(item)">수정</v-btn>
-          <v-btn depressed small>보기</v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -87,7 +74,9 @@ export default {
           width: "10%",
           align: "center",
         },
+        { text: "이미지", value: "mainPhoto" },
         { text: "분류", value: "category" },
+        { text: "분류먕", value: "name" },
         { text: "판매가격", value: "price", width: "10%" },
         { text: "포인트", value: "point", width: "15%" },
         { text: "재고", value: "stock", width: "10%" },

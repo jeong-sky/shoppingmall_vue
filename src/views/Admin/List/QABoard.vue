@@ -1,37 +1,34 @@
 <template>
-  <div style="width: 100%">
+  <div style="width: 100%; height:100%" class="mx-auto">
     <v-card>
       <v-card-title><h4>문의 게시판</h4> </v-card-title>
-      <br />
-
-      <v-container class="pa-1">
-        <v-card-title>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="QABoardList"
-          :search="search"
-          v-model="selected"
-          item-key="num"
-          :single-select="singleSelect"
-          show-select
-          @click:row="boardDetail"
-        ></v-data-table>
-        <template v-slot:top>
-          <v-switch
-            v-model="singleSelect"
-            label="Single select"
-            class="pa-3"
-          ></v-switch>
-        </template>
-      </v-container>
+      <v-divider></v-divider>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="QABoardList"
+        :search="search"
+        v-model="selected"
+        item-key="num"
+        :single-select="singleSelect"
+        show-select
+        @click:row="boardDetail"
+      ></v-data-table>
+      <template v-slot:top>
+        <v-switch
+          v-model="singleSelect"
+          label="Single select"
+          class="pa-3"
+        ></v-switch>
+      </template>
       <v-col align="right">
         <v-btn depressed @click="DeleteSelectedPost">선택삭제</v-btn>
       </v-col>
@@ -39,7 +36,6 @@
   </div>
 </template>
 <script>
-import Route from "@/router/index";
 import { mapState } from "vuex";
 export default {
   data() {

@@ -1,6 +1,8 @@
 <template>
-  <div style="width: 90%" class="mx-auto">
-    <v-card>
+  <div style="width: 100%; height:100%; display: flex;" class="mx-auto">
+    <v-card style="width: 60%; margin:15px;">
+      <v-card-title><h4>포인트 관리</h4> </v-card-title>
+      <v-divider></v-divider>
       <v-card-title>
         <v-text-field
           v-model="search"
@@ -19,7 +21,7 @@
       </v-data-table>
     </v-card>
     <br />
-    <v-card width="45%">
+    <v-card style="width: 38%; margin:15px;">
       <v-list>
         <v-list-item>
           <v-list-item-content>
@@ -73,6 +75,7 @@
             <v-list-item-content>
               <v-col>
                 <v-text-field
+                type="number"
                   outlined
                   dense
                   v-model="point"

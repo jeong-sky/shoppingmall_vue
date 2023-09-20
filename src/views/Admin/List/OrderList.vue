@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%">
+  <div style="width: 100%; height:100%" class="mx-auto">
     <v-card>
       <v-card-title><h4>주문내역관리</h4> </v-card-title>
       <v-divider></v-divider>

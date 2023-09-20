@@ -1,7 +1,7 @@
 <template>
-  <div style="width: 100%">
+  <div style="width: 100%; height:100%" class="mx-auto">
     <v-card>
-      <v-card-title><h4>후기관리</h4> </v-card-title>
+      <v-card-title><h4>후기 관리</h4> </v-card-title>
       <v-divider></v-divider>
       <v-card-title>
         <v-text-field

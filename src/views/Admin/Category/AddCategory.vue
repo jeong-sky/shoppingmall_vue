@@ -1,21 +1,16 @@
 <template>
-  <div style="width: 90%" class="mx-auto">
-    <v-card>
+  <div style="width: 90%; height:100%" class="mx-auto">
+    <v-card style="padding: 50px" class="mx-auto">
+      <v-card-title>
+        <h4 v-if="this.$route.query.code">{{ "[CODE " + this.$route.query.code + "] 하위 " }} 분류 추가</h4> 
+        <h4 v-else>최상위 분류 추가</h4> 
+      </v-card-title>
       <v-list>
-        <v-list-item>
-          <v-list-item-content
-            ><p class="text-md-center">
-              {{ this.$route.query.code }} 하위분류추가
-            </p></v-list-item-content
-          >
-        </v-list-item>
-        <v-divider></v-divider>
         <v-list-item>
           <template v-slot="{}">
             <v-list-item-action style="width: 150px">
               <p>분류코드</p>
             </v-list-item-action>
-
             <v-list-item-content>
               <v-list-item-title
                 ><v-col>
@@ -25,7 +20,7 @@
                   ></v-text-field> </v-col
               ></v-list-item-title>
               <v-list-item-subtitle
-                >하위분류 추가시, 자동으로 보여지는 분류코드를 사용하시길
+                >하위 분류 추가시, 자동으로 보여지는 분류코드를 사용하시길
                 권해드립니다.<br />
                 분류코드는 나중에 수정이 되지 않으므로 신중하게 결정하여
                 사용하십시오.</v-list-item-subtitle
@@ -39,7 +34,6 @@
             <v-list-item-action style="width: 150px">
               <p>분류명</p>
             </v-list-item-action>
-
             <v-list-item-content>
               <v-col cols="12" md="4">
                 <v-text-field v-model="name" label="name"></v-text-field>
@@ -47,15 +41,12 @@
             </v-list-item-content>
           </template>
         </v-list-item>
-
         <v-divider></v-divider>
-
         <v-list-item>
           <template>
             <v-list-item-action style="width: 150px">
               <p>재고수량</p>
             </v-list-item-action>
-
             <v-list-item-content>
               <v-list-item-title>
                 <v-col cols="12" md="4">
@@ -69,15 +60,12 @@
             </v-list-item-content>
           </template>
         </v-list-item>
-
         <v-divider></v-divider>
-
         <v-list-item>
           <template>
             <v-list-item-action style="width: 150px">
               <p>판매가능</p>
             </v-list-item-action>
-
             <v-list-item-content>
               <v-list-item-title>
                 <v-col cols="12" md="4">
@@ -95,11 +83,12 @@
         </v-list-item>
       </v-list>
       <br />
-      <br />
-      <v-col align="right">
-        <v-btn depressed @click="submit">등록</v-btn>
-        <v-btn depressed router :to="{ name: 'Category' }">취소</v-btn>
-      </v-col>
+      <div align="right">
+        <v-btn depressed router :to="{ name: 'Category' }" style="margin-right:10px;">취소</v-btn>
+        <v-btn @click="submit" dark color="hsl(231, 30%, 54%)">
+          등록
+        </v-btn> 
+      </div>
     </v-card>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 80%" class="mx-auto">
+  <div style="width: 100%; height:100%" class="mx-auto">
     <br />
     <v-card elevation="0">
       <v-card-title><h4>주문상품</h4> </v-card-title>

@@ -1,6 +1,8 @@
 <template>
-  <div style="width: 90%" class="mx-auto">
+  <div style="width: 100%; height:100%" class="mx-auto">
     <v-card>
+       <v-card-title><h4>회원 관리</h4> </v-card-title>
+      <v-divider></v-divider>
       <v-card-title>
         <v-text-field
           v-model="search"
@@ -12,7 +14,7 @@
       </v-card-title>
       <v-data-table :headers="headers" :items="UserList" :search="search">
         <template v-slot:item.reject="{ item }">
-          <v-checkbox color="red" v-model="!item.reject"></v-checkbox>
+          <v-checkbox color="red" v-model="!item.reject" disabled></v-checkbox>
         </template>
         <template v-slot:item.action="{ item }">
           <v-btn
@@ -20,7 +22,7 @@
             v-if="item.reject"
             small
             @click="block(item.username)"
-            >제한</v-btn
+            >사용 제한</v-btn
           >
 
           <v-btn depressed v-else small @click="unblock(item.username)"
